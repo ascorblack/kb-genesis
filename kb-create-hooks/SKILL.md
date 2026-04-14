@@ -1,6 +1,8 @@
 ---
 name: kb-create-hooks
 description: Create enforcement hooks that inject .kb/ knowledge into AI agent sessions at startup and guard deployment commands. Supports Claude Code hooks and Codex/OpenCode equivalents.
+user-invocable: true
+allowed-tools: Read Bash Edit Write Glob Grep
 ---
 
 # KB Create Hooks — Enforce Knowledge Base Usage

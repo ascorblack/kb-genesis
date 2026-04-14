@@ -1,25 +1,32 @@
 # KB Genesis — Project Knowledge Base Standard for AI Agents
 
-A universal skill for bootstrapping a structured knowledge base (`.kb/`) in any software project, optimized for AI coding agents (Claude Code, Codex, Gemini CLI, Cursor, etc.).
+A universal skill package for bootstrapping a structured knowledge base (`.kb/`) in any software project, optimized for AI coding agents (Claude Code, Codex, Gemini CLI, Cursor, etc.).
 
 ## Quick Install
 
-### Claude Code — Global (all your projects)
+### Claude Code (recommended)
 
 ```bash
-git clone https://github.com/ascorblack/kb-genesis.git ~/.claude/skills/kb-genesis
+# 1. Clone the repo
+git clone https://github.com/ascorblack/kb-genesis.git ~/.local/share/kb-genesis
+
+# 2. Install skills (creates symlinks — global, works in all projects)
+~/.local/share/kb-genesis/install.sh
 ```
 
-After install, use in any project:
+Three skills become available:
 
 ```
-/kb-genesis
+/kb-genesis       — Create a knowledge base for a project
+/kb-mine-history  — Mine agent conversation histories for knowledge
+/kb-create-hooks  — Set up enforcement hooks
 ```
 
-### Claude Code — Single Project
+#### Project-Local Install (single project only)
 
 ```bash
-git clone https://github.com/ascorblack/kb-genesis.git .claude/skills/kb-genesis
+git clone https://github.com/ascorblack/kb-genesis.git ~/.local/share/kb-genesis
+~/.local/share/kb-genesis/install.sh --project
 ```
 
 ### Codex / Gemini CLI / Any Agent
@@ -30,67 +37,64 @@ git clone https://github.com/ascorblack/kb-genesis.git kb-genesis
 
 Then tell the agent:
 
-> Read kb-genesis/SKILL.md and follow it to create a .kb/ for this project
+> Read kb-genesis/kb-genesis/SKILL.md and follow it to create a .kb/ for this project
 
 ### Cursor / Windsurf
 
 ```bash
-# Cursor
-mkdir -p .cursor/rules
-curl -sL https://raw.githubusercontent.com/ascorblack/kb-genesis/main/SKILL.md \
+mkdir -p .cursor/rules   # or .windsurf/rules
+curl -sL https://raw.githubusercontent.com/ascorblack/kb-genesis/main/kb-genesis/SKILL.md \
   > .cursor/rules/kb-genesis.mdc
-
-# Windsurf
-mkdir -p .windsurf/rules
-curl -sL https://raw.githubusercontent.com/ascorblack/kb-genesis/main/SKILL.md \
-  > .windsurf/rules/kb-genesis.md
 ```
 
 ### Update
 
 ```bash
-git -C ~/.claude/skills/kb-genesis pull        # global
-git -C .claude/skills/kb-genesis pull           # project-local
+git -C ~/.local/share/kb-genesis pull
 ```
+
+Symlinks mean updates apply instantly — no reinstall needed.
 
 ### Uninstall
 
 ```bash
-rm -rf ~/.claude/skills/kb-genesis              # global
-rm -rf .claude/skills/kb-genesis                # project-local
+~/.local/share/kb-genesis/uninstall.sh
+rm -rf ~/.local/share/kb-genesis
 ```
 
 ---
 
 ## How It Works
 
-After installing, type `/kb-genesis` in Claude Code. The agent will:
+```
+/kb-genesis          Analyze project → create .kb/ → verify → offer next steps
+       ↓                                                    ↓
+/kb-mine-history     Extract gotchas, decisions, bug patterns from past agent sessions
+/kb-create-hooks     Set up SessionStart hook (KB injection) + PreToolUse hook (deploy guard)
+```
 
-1. **Analyze** your project — repos, dependencies, stack, conventions, infrastructure
-2. **Mine history** — extract gotchas and decisions from past agent conversations
-3. **Create `.kb/`** — structured knowledge base with architecture, runtime, operations, conventions, gotchas, and context docs
-4. **Set up hooks** — auto-inject KB into future sessions, guard deployments
-5. **Integrate** — update CLAUDE.md / AGENTS.md to reference the KB
+1. **`/kb-genesis`** — Analyzes your project (repos, stack, conventions, infrastructure), creates a structured `.kb/` knowledge base, verifies it, and offers to run the companion skills
+2. **`/kb-mine-history`** — Finds Claude Code / Codex / OpenCode conversation histories, filters by project, extracts bug patterns, architectural decisions, failed approaches, and operational knowledge into `.kb/` files
+3. **`/kb-create-hooks`** — Creates enforcement hooks that auto-inject the KB into every agent session and guard deployment commands with safety reminders
 
-## Files
+## Structure
 
 ```
 kb-genesis/
-├── SKILL.md              # Main skill — invoked via /kb-genesis
-├── kb-mine-history.md    # Companion: conversation history mining
-├── kb-create-hooks.md    # Companion: enforcement hooks setup
-└── README.md             # This file
+├── kb-genesis/           # /kb-genesis — main skill
+│   └── SKILL.md
+├── kb-mine-history/      # /kb-mine-history — conversation mining
+│   └── SKILL.md
+├── kb-create-hooks/      # /kb-create-hooks — enforcement hooks
+│   └── SKILL.md
+├── install.sh            # Symlink skills into ~/.claude/skills/
+├── uninstall.sh          # Remove symlinks
+└── README.md
 ```
-
-| File | Purpose |
-|------|---------|
-| `SKILL.md` | **Main skill.** Full standard and 8-phase process to analyze a project and create a KB |
-| `kb-mine-history.md` | **Companion.** Extract knowledge from Claude Code / Codex / OpenCode conversation histories |
-| `kb-create-hooks.md` | **Companion.** Create SessionStart and PreToolUse hooks for Claude Code, Codex, Cursor, Windsurf |
 
 ## What This Is
 
-A set of instructions that an AI agent reads and follows to create a comprehensive, agent-readable knowledge base for a project. The KB captures institutional knowledge that can't be derived from code alone: architectural decisions, operational gotchas, bug patterns, conventions, and business context.
+A set of skills (instructions) that an AI agent reads and follows to create a comprehensive, agent-readable knowledge base for a project. The KB captures institutional knowledge that can't be derived from code alone: architectural decisions, operational gotchas, bug patterns, conventions, and business context.
 
 ## Design Principles
 

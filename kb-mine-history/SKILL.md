@@ -1,6 +1,8 @@
 ---
 name: kb-mine-history
 description: Extract institutional knowledge from AI agent conversation histories (Claude Code, Codex, OpenCode). Filters by project, identifies bug patterns, architectural decisions, gotchas, and failed approaches. Outputs structured entries for .kb/ files.
+user-invocable: true
+allowed-tools: Read Bash Edit Write Glob Grep Agent
 ---
 
 # KB Mine History — Extract Knowledge from Agent Conversations

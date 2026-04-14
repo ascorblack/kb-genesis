@@ -12,9 +12,9 @@ You are creating a **structured knowledge base** (`.kb/` directory) for the curr
 
 ## Companion Skills
 
-This skill has companion files for specialized tasks. Read them when needed:
-- [kb-mine-history.md](kb-mine-history.md) — extract knowledge from existing AI agent conversation histories (Claude Code, Codex, OpenCode)
-- [kb-create-hooks.md](kb-create-hooks.md) — create enforcement hooks that inject KB context at session start and guard deployments
+This skill has companion skills invocable separately via `/`:
+- `/kb-mine-history` — extract knowledge from existing AI agent conversation histories (Claude Code, Codex, OpenCode)
+- `/kb-create-hooks` — create enforcement hooks that inject KB context at session start and guard deployments
 
 ## Why This Matters
 
@@ -575,3 +575,35 @@ These rules must be communicated to all agents working on the project:
 6. **No stale dates.** Convert relative dates ("next week") to absolute dates ("2026-04-21").
 7. **Commit KB separately** if it's a standalone repo.
 8. **Prune quarterly.** Remove entries that are no longer relevant. A stale KB is worse than no KB.
+
+---
+
+## Phase 9: Next Steps
+
+After the KB is created, verified, and committed, offer the user these follow-up actions:
+
+### Mine Conversation History
+
+If the project has existing AI agent conversation histories (Claude Code, Codex, OpenCode, etc.), there is likely valuable institutional knowledge buried in past sessions — bug patterns, architectural decisions, failed approaches.
+
+**Tell the user:**
+
+> The knowledge base is created. I can also mine your past agent conversations for this project to extract gotchas, bug patterns, and decisions that aren't captured in the code. This enriches the KB significantly — especially for projects with long development history.
+>
+> To run this, invoke: `/kb-mine-history`
+
+### Set Up Enforcement Hooks
+
+Without hooks, the KB is passive — agents CAN ignore it. Hooks make it deterministic: the KB index is injected into every session automatically, and deployment commands trigger safety reminders.
+
+**Tell the user:**
+
+> I can also set up enforcement hooks so the KB is automatically loaded into every agent session and deployments are guarded with safety checks.
+>
+> To run this, invoke: `/kb-create-hooks`
+
+### Both at Once
+
+If the user wants everything in one go:
+
+> Want me to also mine your conversation history and set up hooks? I can do both right now — just say "yes" and I'll invoke `/kb-mine-history` and then `/kb-create-hooks`.
