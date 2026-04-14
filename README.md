@@ -1,98 +1,105 @@
 # KB Genesis — Project Knowledge Base Standard for AI Agents
 
-A universal skill package for bootstrapping a structured knowledge base (`.kb/`) in any software project, optimized for AI coding agents (Claude Code, Codex, Gemini CLI, Cursor, etc.).
+A universal skill for bootstrapping a structured knowledge base (`.kb/`) in any software project, optimized for AI coding agents (Claude Code, Codex, Gemini CLI, Cursor, etc.).
 
 ## Quick Install
 
-### Claude Code (one command)
+### Claude Code — Global (all your projects)
 
 ```bash
-# From your project root:
-git clone https://github.com/ascorblack/kb-genesis.git .claude/skills/kb-genesis
+git clone https://github.com/ascorblack/kb-genesis.git ~/.claude/skills/kb-genesis
 ```
 
-Then tell Claude Code:
+After install, use in any project:
 
-> Create a knowledge base for this project using the kb-genesis skill
+```
+/kb-genesis
+```
+
+### Claude Code — Single Project
+
+```bash
+git clone https://github.com/ascorblack/kb-genesis.git .claude/skills/kb-genesis
+```
 
 ### Codex / Gemini CLI / Any Agent
 
 ```bash
-# Clone into your project:
 git clone https://github.com/ascorblack/kb-genesis.git kb-genesis
-
-# Then tell the agent:
-# "Read kb-genesis/kb-genesis.md and follow it to create a .kb/ for this project"
 ```
+
+Then tell the agent:
+
+> Read kb-genesis/SKILL.md and follow it to create a .kb/ for this project
 
 ### Cursor / Windsurf
 
 ```bash
-# Clone and copy the main skill as a rule:
-git clone https://github.com/ascorblack/kb-genesis.git /tmp/kb-genesis
-cp /tmp/kb-genesis/kb-genesis.md .cursor/rules/kb-genesis.mdc   # Cursor
-cp /tmp/kb-genesis/kb-genesis.md .windsurf/rules/kb-genesis.md  # Windsurf
+# Cursor
+mkdir -p .cursor/rules
+curl -sL https://raw.githubusercontent.com/ascorblack/kb-genesis/main/SKILL.md \
+  > .cursor/rules/kb-genesis.mdc
+
+# Windsurf
+mkdir -p .windsurf/rules
+curl -sL https://raw.githubusercontent.com/ascorblack/kb-genesis/main/SKILL.md \
+  > .windsurf/rules/kb-genesis.md
 ```
 
-### Update to Latest Version
+### Update
 
 ```bash
-# If installed as Claude Code skills:
-git -C .claude/skills/kb-genesis pull
-
-# If installed in project root:
-git -C kb-genesis pull
+git -C ~/.claude/skills/kb-genesis pull        # global
+git -C .claude/skills/kb-genesis pull           # project-local
 ```
 
 ### Uninstall
 
 ```bash
-rm -rf .claude/skills/kb-genesis  # or rm -rf kb-genesis
+rm -rf ~/.claude/skills/kb-genesis              # global
+rm -rf .claude/skills/kb-genesis                # project-local
 ```
 
 ---
 
-## What This Is
+## How It Works
 
-A set of skills (instructions) that an AI agent reads and follows to create a comprehensive, agent-readable knowledge base for a project. The KB captures institutional knowledge that can't be derived from code alone: architectural decisions, operational gotchas, bug patterns, conventions, and business context.
+After installing, type `/kb-genesis` in Claude Code. The agent will:
+
+1. **Analyze** your project — repos, dependencies, stack, conventions, infrastructure
+2. **Mine history** — extract gotchas and decisions from past agent conversations
+3. **Create `.kb/`** — structured knowledge base with architecture, runtime, operations, conventions, gotchas, and context docs
+4. **Set up hooks** — auto-inject KB into future sessions, guard deployments
+5. **Integrate** — update CLAUDE.md / AGENTS.md to reference the KB
 
 ## Files
 
+```
+kb-genesis/
+├── SKILL.md              # Main skill — invoked via /kb-genesis
+├── kb-mine-history.md    # Companion: conversation history mining
+├── kb-create-hooks.md    # Companion: enforcement hooks setup
+└── README.md             # This file
+```
+
 | File | Purpose |
 |------|---------|
-| `kb-genesis.md` | **Main skill.** Full standard and step-by-step process to analyze a project and create a KB from scratch |
-| `kb-mine-history.md` | **History mining skill.** Extract knowledge from existing AI agent conversation histories (Claude Code, Codex, OpenCode) |
-| `kb-create-hooks.md` | **Hooks skill.** Create enforcement hooks that inject KB context into agent sessions and guard deployments |
+| `SKILL.md` | **Main skill.** Full standard and 8-phase process to analyze a project and create a KB |
+| `kb-mine-history.md` | **Companion.** Extract knowledge from Claude Code / Codex / OpenCode conversation histories |
+| `kb-create-hooks.md` | **Companion.** Create SessionStart and PreToolUse hooks for Claude Code, Codex, Cursor, Windsurf |
 
-## Usage
+## What This Is
 
-### For Claude Code
-
-Copy to your project and invoke:
-```bash
-# Option 1: Copy as skills
-cp kb-genesis/*.md /path/to/project/.claude/skills/
-
-# Option 2: Just send the file content to an agent
-# "Read kb-genesis/kb-genesis.md and follow it for this project"
-```
-
-### For Codex / Other Agents
-
-Paste the content of `kb-genesis.md` as the task prompt, or reference it in AGENTS.md:
-```markdown
-## Knowledge Base
-Follow the instructions in `kb-genesis/kb-genesis.md` to create and maintain the project KB.
-```
-
-### For Humans
-
-Send `kb-genesis.md` to anyone working with AI agents. They paste it into their agent's context, and the agent creates the KB for their project.
+A set of instructions that an AI agent reads and follows to create a comprehensive, agent-readable knowledge base for a project. The KB captures institutional knowledge that can't be derived from code alone: architectural decisions, operational gotchas, bug patterns, conventions, and business context.
 
 ## Design Principles
 
-- **Language/framework agnostic** — works for Python, TypeScript, Go, Rust, Java, or any stack
+- **Language/framework agnostic** — Python, TypeScript, Go, Rust, Java, or any stack
 - **Agent-first formatting** — tables, code blocks, symptom-cause-fix patterns over prose
 - **Hot/cold memory split** — always-loaded index + on-demand deep documents
 - **Self-maintaining** — agents update the KB as they work, knowledge compounds over sessions
 - **Hook-enforced** — deterministic injection at session start, not probabilistic rule-following
+
+## License
+
+Public domain. Use however you want.

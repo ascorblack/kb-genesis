@@ -1,11 +1,20 @@
 ---
 name: kb-genesis
 description: Analyze a project and create a structured .kb/ knowledge base from scratch. Universal standard for any language, framework, or stack. Produces agent-readable documentation that compounds across sessions.
+user-invocable: true
+argument-hint: "[mine-history] [create-hooks]"
+allowed-tools: Read Bash Edit Write Glob Grep Agent
 ---
 
 # KB Genesis — Create a Project Knowledge Base
 
 You are creating a **structured knowledge base** (`.kb/` directory) for the current project. This KB will be read by AI coding agents (Claude Code, Codex, Gemini CLI, Cursor, etc.) at the start of every work session. It captures institutional knowledge that cannot be derived from reading code alone.
+
+## Companion Skills
+
+This skill has companion files for specialized tasks. Read them when needed:
+- [kb-mine-history.md](kb-mine-history.md) — extract knowledge from existing AI agent conversation histories (Claude Code, Codex, OpenCode)
+- [kb-create-hooks.md](kb-create-hooks.md) — create enforcement hooks that inject KB context at session start and guard deployments
 
 ## Why This Matters
 
