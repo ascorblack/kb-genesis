@@ -2,6 +2,56 @@
 
 A universal skill package for bootstrapping a structured knowledge base (`.kb/`) in any software project, optimized for AI coding agents (Claude Code, Codex, Gemini CLI, Cursor, etc.).
 
+## Quick Install
+
+### Claude Code (one command)
+
+```bash
+# From your project root:
+git clone https://github.com/ascorblack/kb-genesis.git .claude/skills/kb-genesis
+```
+
+Then tell Claude Code:
+
+> Create a knowledge base for this project using the kb-genesis skill
+
+### Codex / Gemini CLI / Any Agent
+
+```bash
+# Clone into your project:
+git clone https://github.com/ascorblack/kb-genesis.git kb-genesis
+
+# Then tell the agent:
+# "Read kb-genesis/kb-genesis.md and follow it to create a .kb/ for this project"
+```
+
+### Cursor / Windsurf
+
+```bash
+# Clone and copy the main skill as a rule:
+git clone https://github.com/ascorblack/kb-genesis.git /tmp/kb-genesis
+cp /tmp/kb-genesis/kb-genesis.md .cursor/rules/kb-genesis.mdc   # Cursor
+cp /tmp/kb-genesis/kb-genesis.md .windsurf/rules/kb-genesis.md  # Windsurf
+```
+
+### Update to Latest Version
+
+```bash
+# If installed as Claude Code skills:
+git -C .claude/skills/kb-genesis pull
+
+# If installed in project root:
+git -C kb-genesis pull
+```
+
+### Uninstall
+
+```bash
+rm -rf .claude/skills/kb-genesis  # or rm -rf kb-genesis
+```
+
+---
+
 ## What This Is
 
 A set of skills (instructions) that an AI agent reads and follows to create a comprehensive, agent-readable knowledge base for a project. The KB captures institutional knowledge that can't be derived from code alone: architectural decisions, operational gotchas, bug patterns, conventions, and business context.
